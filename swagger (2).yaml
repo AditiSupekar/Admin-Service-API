@@ -1,0 +1,232 @@
+swagger: "2.0"
+info:
+  description: "This is a sample server Petstore server.  You can find out more about     Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).      For this sample, you can use the api key `special-key` to test the authorization     filters."
+  version: "1.0.0"
+  title: "AdminService"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "apiteam@swagger.io"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:8080"
+basePath: "/api"
+
+schemes:
+- "http"
+paths:
+  /lenders:
+    get:
+      tags:
+      - "Lenders"
+      summary: "Get list of Lenders"
+      description: "This is a get request to retrieve lenders"
+      operationId: "getLenders"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Lender"
+        400:
+            description: "lenders not found"
+    post:
+      tags:
+      - "Lenders"
+      summary: "Add a new lender"
+      description: "This is a post request to create lenders"
+      operationId: "createLender"
+      consumes:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: true
+        schema:  
+          $ref: "#/definitions/Lender"
+      responses:
+        201:
+          description: "Lender created"
+        409:
+          description: "Conflict"
+        400:
+          description: "Bad request"
+  /lenders/{lenderId}:
+    get:
+      tags:
+      - "Lenders"
+      summary: "Finds Lenders by Id"
+      description: "Get list of Lenders by Id"
+      operationId: "findLendersById"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "lenderId"
+        in: "path"
+        description: "Status values that need to be considered for filter"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Lender"
+        404:
+          description: "Lender not found"
+    put:
+      tags:
+      - "Lenders"
+      summary: "Update Lender"
+      description: "update the list of Lenders"
+      operationId: "updateLenders"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "lenderId"
+        in: "path"
+        description: "Status values that need to be considered for filter"
+        required: true
+        type: "integer"
+        format: "int64"
+      - in: "body"
+        name: "body"
+        required: true
+        schema:  
+          $ref: "#/definitions/Lender"
+      responses:
+        204:
+          description: "No content"
+        404:
+          description: "Lender not found"
+    delete:
+      tags:
+      - "Lenders"
+      summary: "Delete Lenders"
+      description: "Delete the list of Lenders"
+      operationId: "deleteLenders"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "lenderId"
+        in: "path"
+        description: "Status values that need to be considered for filter"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        204:
+          description: "No content"
+        404:
+          description: "Lender not found"
+    head:
+      tags:
+      - "Lenders"
+      summary: "Check Lenders by Id"
+      description: "Check if Lender with specific Id is present"
+      operationId: "checkLenders"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "lenderId"
+        in: "path"
+        description: "Status values that need to be considered for filter"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+        404:
+          description: "Lender not found"
+  /lenders/{lenderId}/status:
+    patch:
+      tags:
+      - "Lenders"
+      summary: "Update Lender with specific Id and status"
+      description: "Muliple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing."
+      operationId: "updateLendersById"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "lenderId"
+        in: "path"
+        description: "Tags to filter by"
+        required: true
+        type: "integer"
+      - name: "lenderStatus"
+        in: "path"
+        description: "Tags to filter by"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: true
+        schema:  
+          $ref: "#/definitions/update"
+      responses:
+        204:
+          description: "No content"
+          
+        404:
+          description: "Lender not found"
+definitions:
+  Lender:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      name:
+        type: "string"
+      Address:
+        $ref:  "#/definitions/Address"
+      status:
+        type: "string"
+        description: "Order Status"
+        enum:
+        - "active"
+        - "not active"
+      createdBy:
+        type: "string"
+      createdDate:
+        type: "string"
+        format: "date-time"
+      updatedBy:
+        type: "string"
+      updatedDate:
+        type: "string" 
+        format: "date-time"
+        
+  Address:
+    type: "object"
+    properties:
+      street:
+        type: "string"
+      city:
+        type: "string"
+      state:
+        type: "string"
+      zipCode:
+        type: "integer"
+      country:
+        type: "string"
+    xml:
+      name: "Lender"
+
+  update:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      status:
+        type: "string"
+        
+        
+        
+        
+        
+        
+        
